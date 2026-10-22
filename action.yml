@@ -1,0 +1,49 @@
+name: HDRJPG convert HDR photos
+description: Converts HDR photos (iPhone HEIC, Android Ultra HDR JPG, EXR) into web-ready HDR files with the HDRJPG API, at build time.
+author: HDRJPG
+branding:
+  icon: sun
+  color: green
+
+inputs:
+  api-key:
+    description: Your HDRJPG API key. Store it as a repository secret.
+    required: true
+  source:
+    description: Glob patterns of the HDR files to convert, one per line, relative to the workspace. HEIC, HEIF, JPG, JPEG and EXR files are converted; other matches are ignored.
+    default: '**/*.{heic,HEIC,exr,EXR}'
+  output-dir:
+    description: Where the converted files go. Each source's files land under its own relative directory.
+    default: hdr
+  variants:
+    description: A JSON array of variants, as the API's variant parameter (width, height, format, baseQuality, gainmapQuality, onSdr, fileName). Defaults to a 1600 px gain map JPEG, AVIF and MP4.
+    default: ''
+  concurrency:
+    description: How many conversions run at once.
+    default: '2'
+  poll-interval:
+    description: Seconds between status checks, 2 or more.
+    default: '3'
+  timeout:
+    description: Seconds to wait for one conversion before giving up on it.
+    default: '600'
+  fail-on-error:
+    description: Fail the step when any file fails to convert.
+    default: 'true'
+  api-url:
+    description: The HDRJPG API's address.
+    default: https://api.hdrjpg.com
+
+outputs:
+  converted:
+    description: How many files were converted in this run.
+  skipped:
+    description: How many files were already converted with the same variants and were skipped.
+  failed:
+    description: How many files failed to convert.
+  files:
+    description: The converted files, one path per line, including those from skipped sources.
+
+runs:
+  using: node24
+  main: src/index.js

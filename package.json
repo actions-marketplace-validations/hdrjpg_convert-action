@@ -1,0 +1,11 @@
+{
+    "name": "hdrjpg-convert-action",
+    "version": "1.0.0",
+    "private": true,
+    "description": "GitHub Action that converts HDR photos into web-ready HDR files with the HDRJPG API",
+    "type": "module",
+    "scripts": {
+        "test": "node --test test/*.test.js"
+    },
+    "license": "MIT"
+}
